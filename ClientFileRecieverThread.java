@@ -12,7 +12,7 @@ import org.omg.CORBA.portable.InputStream;
 
 
 public class ClientFileRecieverThread implements Runnable {
-	InetAddress ip;
+	String ip;
 	int port;
 	
 	
@@ -29,13 +29,13 @@ public class ClientFileRecieverThread implements Runnable {
 				new BufferedReader(
 						new InputStreamReader(fileServerSocket.getInputStream()));
 		byte[] mybytearray = new byte[1024];
-	    InputStream is = fileServerSocket.getInputStream();
+	  //  InputStream is = fileServerSocket.getInputStream();
 	    FileOutputStream fos = new FileOutputStream("s.pdf");
 	    BufferedOutputStream bos = new BufferedOutputStream(fos);
-	    int bytesRead = is.read(mybytearray, 0, mybytearray.length);
-	    bos.write(mybytearray, 0, bytesRead);
+	   // int bytesRead = is.read(mybytearray, 0, mybytearray.length);
+	 //   bos.write(mybytearray, 0, bytesRead);
 	    bos.close();
-	    sock.close();
+	 //   sock.close();
 		} catch (IOException e) {
 			
 		}
