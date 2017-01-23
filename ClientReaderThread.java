@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -32,13 +33,22 @@ public class ClientReaderThread implements Runnable{
 					
 				} else if(message.equals("ACCEPTFILE")) {
 					System.out.println(sender + " accepted your file, setting up communication channel");
-					new Thread(new ClientFileSenderThread(serverSocket, sender)).run();
-					
+					PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
+					ClientFileSenderThread fileServerThread = new ClientFileSenderThread(serverSocket, sender);
+					new Thread(fileServerThread).start();
+					out.println(sender);
+					out.println("SOCKETINFO");
+					out.println("127.0.0.1");
+					out.println(5555);
 				} else if(message.equals("SOCKETINFO")) {
-					String ip = message;
+					String ip = in.readLine();
 					int port = Integer.parseInt(in.readLine());
-					
 					new Thread(new ClientFileRecieverThread(ip, port)).run();
+					ClientFileRecieverThread fileClientThread = new ClientFileRecieverThread(ip, port);
+					new Thread(fileClientThread).start();
+					
+					
+					
 					
 				} else {
 					System.out.println("From: " + sender + "\tMessage: " + message);

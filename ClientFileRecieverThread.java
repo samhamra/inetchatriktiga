@@ -24,18 +24,22 @@ public class ClientFileRecieverThread implements Runnable {
 
 	public void run() {
 		try {
-		Socket fileServerSocket = new Socket(ip, port);
+			System.out.println("hejsan filereciever");
+		Socket fileServerSocket = new Socket("localhost", port);
+		System.out.println("connected to fileserver");
 		BufferedReader in =
 				new BufferedReader(
 						new InputStreamReader(fileServerSocket.getInputStream()));
 		byte[] mybytearray = new byte[1024];
-	  //  InputStream is = fileServerSocket.getInputStream();
-	    FileOutputStream fos = new FileOutputStream("s.pdf");
+		
+	    InputStream is = (InputStream) fileServerSocket.getInputStream();
+	    FileOutputStream fos = new FileOutputStream("newfile");
 	    BufferedOutputStream bos = new BufferedOutputStream(fos);
-	   // int bytesRead = is.read(mybytearray, 0, mybytearray.length);
-	 //   bos.write(mybytearray, 0, bytesRead);
+	    int fileSize = is.read_long();
+	    byte[] byteArray = new byte[fileSize];
+	    int bytesRead = is.read(mybytearray, 0, fileSize);
+	    bos.write(mybytearray, 0, bytesRead);
 	    bos.close();
-	 //   sock.close();
 		} catch (IOException e) {
 			
 		}
