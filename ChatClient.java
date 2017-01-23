@@ -10,7 +10,7 @@ public class ChatClient {
 	public ChatClient(String nickname) {
 		try {
 			System.out.println("Connecting to server...");
-			Socket serverSocket = new Socket("169.254.203.139", 4444);
+			Socket serverSocket = new Socket("2.248.13.50", 4444);
 			System.out.println("Welcome " + nickname);
 			out = new PrintWriter(serverSocket.getOutputStream(), true);
 			out.println(nickname);
