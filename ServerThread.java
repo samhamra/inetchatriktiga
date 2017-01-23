@@ -23,7 +23,7 @@ public class ServerThread implements Runnable {
 					new InputStreamReader(clientSocket.getInputStream()));
 			System.out.println("New connection:" + clientSocket.getLocalAddress());
 			nickname = in.readLine();
-			// här kan man fixa så två personer inte har samma namn och skriver över varandras sockets i listan.
+
 			socketList.put(nickname, clientSocket);
 		} catch(IOException e) {
 
