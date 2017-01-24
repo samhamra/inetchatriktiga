@@ -53,20 +53,15 @@ public class ServerThread implements Runnable {
 					if(message.equals("SENDFILE")) {
 						out.println(nickname);
 						out.println(message);
-						String fileName = in.readLine();
-						out.println(fileName); //filnamnet
 					} else	if(message.equals("ACCEPTFILE")) {
 						out.println(nickname);
 						out.println(message);
-						String fileName = in.readLine();
-						out.println(fileName); //filnamnet
 					} else	if(message.equals("SOCKETINFO")) {
 						out.println(nickname);
-						System.out.println(nickname);
 						out.println(message);
-						System.out.println(socketList.get(nickname).getLocalAddress());
 						out.println(socketList.get(nickname).getLocalAddress());
-						out.println(in.readLine()); //port
+						String port = in.readLine();
+						out.println(port); //port
 
 					} else {
 						out.println(nickname);

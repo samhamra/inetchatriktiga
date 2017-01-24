@@ -11,9 +11,12 @@ public class ClientReaderThread implements Runnable{
 
 	Socket serverSocket;
 	BufferedReader in;
-	public ClientReaderThread(Socket serverSocket) {
+	SynchronizedVariables shared;
+	int port;
+	public ClientReaderThread(Socket serverSocket, SynchronizedVariables shared) {
 		this.serverSocket = serverSocket;
-
+		this.shared = shared;
+		this.port = port;
 	}
 
 	public void run() {
@@ -27,26 +30,23 @@ public class ClientReaderThread implements Runnable{
 				sender = in.readLine();
 				message = in.readLine();
 				if(message.equals("SENDFILE")) {
-					String fileName = in.readLine();
-					System.out.println(sender+ " wants to send you a file named " +fileName +  "Respond to sender with \"ACCEPTFILE\"  following the filename to accept and \"DECLINEFILE\" to decline");
+					System.out.println(sender+ " wants to send you a file named  Respond to sender with \"ACCEPTFILE\"  and \"DECLINEFILE\" to decline");
 					
 				} else if(message.equals("DECLINEFILE")) {
 					System.out.println(sender+ " declined your file");
 					
 				} else if(message.equals("ACCEPTFILE")) {
-					String fileName = in.readLine();
-					PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
-					
-					ClientFileSenderThread fileServerThread = new ClientFileSenderThread(serverSocket, fileName);
+					PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);	
+					ClientFileSenderThread fileServerThread = new ClientFileSenderThread(serverSocket, shared.getName(), shared.getPort());
 					new Thread(fileServerThread).start();
 					out.println(sender);
 					out.println("SOCKETINFO");
-					out.println(5555);
+					out.println(shared.getPort());
 				} else if(message.equals("SOCKETINFO")) {
-					System.out.println("socketinfo kom");
 					String ip = in.readLine();
 					System.out.println(ip);
 					int port = Integer.parseInt(in.readLine());
+					System.out.println(port);
 					ClientFileRecieverThread fileClientThread = new ClientFileRecieverThread(ip, port);
 					new Thread(fileClientThread).start();
 					

@@ -21,8 +21,9 @@ public class ClientFileRecieverThread implements Runnable {
 
 	public void run() {
 		try {
-			Socket fileServerSocket = new Socket("169.254.203.139", port);
-			System.out.println("connected to fileserver");
+			System.out.println("trying to connect");
+			Socket fileServerSocket = new Socket("127.0.0.1", port);
+			System.out.println("connected to: "+ ip + "on port " + port);
 			File newFile = new File("myfile2");
 			InputStream is = fileServerSocket.getInputStream();
 			DataInputStream dis = new DataInputStream(is);

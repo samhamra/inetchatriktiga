@@ -11,20 +11,22 @@ import java.net.Socket;
 
 public class ClientFileSenderThread implements Runnable {
 	private Socket serverSocket;
-	final int PORT = 5555;
+	private int port;
 	String fileName;
 	
-	public ClientFileSenderThread(Socket serverSocket, String fileName) {
+	public ClientFileSenderThread(Socket serverSocket, String fileName, int port) {
 		this.serverSocket = serverSocket;
 		this.fileName = fileName;
+		this.port = port;
 	}
 
 
 	public void run() {
 		try {		
-			ServerSocket fileSocket = new ServerSocket(PORT);
+			ServerSocket fileSocket = new ServerSocket(port);
+			System.out.println("waiting");
 			Socket clientSocket = fileSocket.accept();
-			System.out.println("fileclient connected");
+			System.out.println("fileclient connected on port " + port);
 			System.out.println(fileName);
 			File myFile = new File(fileName);
 			FileInputStream in = new FileInputStream(myFile);

@@ -10,7 +10,6 @@ public class ChatServer {
 
 	public ChatServer() {
 
-
 		try {
 			System.out.println(InetAddress.getLocalHost());
 			ServerSocket serverSocket =  new ServerSocket(4444);
@@ -21,14 +20,11 @@ public class ChatServer {
 				new Thread(serverThread).start();
 			}
 		} catch(Exception e) { 
-		
 		}
 
 	}
-
 	public static void main(String[] args) {
 		new ChatServer();
-
 	}
 }
 

@@ -2,13 +2,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-
-
 public class ClientWriterThread implements Runnable {
 	Socket serverSocket;
 	PrintWriter out;
-	public ClientWriterThread(Socket serverSocket) {
+	
+	SynchronizedVariables shared;
+	int port;
+	public ClientWriterThread(Socket serverSocket, SynchronizedVariables shared) {
 		this.serverSocket = serverSocket;
+		this.shared = shared;
 	}
 
 	public void run() {
@@ -20,22 +22,19 @@ public class ClientWriterThread implements Runnable {
 					new PrintWriter(serverSocket.getOutputStream(), true);
 			String target;
 			String message;
-			String fileName;
 			while (true) {
 				target = stdIn.readLine();
 				message = stdIn.readLine();
+				if(message.equals("SENDFILE")) {
+					String fileName = stdIn.readLine();
+					int port = Integer.parseInt(stdIn.readLine());
+					shared.setFileName(fileName);
+					shared.setPort(port);
+				}
 				out.println(target);
 				out.println(message);
-				if(message.equals("SENDFILE")) {
-					fileName = stdIn.readLine();
-					out.println(fileName); //filename
-					
-				} else if(message.equals("ACCEPTFILE")) {
-					fileName = stdIn.readLine();
-					out.println(fileName); //filename
-				}
+				
 			}
-
 		} catch(Exception e) {
 			System.out.println("Exception in WriterThread");
 		}
