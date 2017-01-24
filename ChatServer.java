@@ -9,7 +9,7 @@ public class ChatServer {
 	public Map<String, Socket> socketList = new HashMap<String, Socket>();
 
 	public ChatServer() {
-
+		
 		try {
 			System.out.println(InetAddress.getLocalHost());
 			ServerSocket serverSocket =  new ServerSocket(4444);

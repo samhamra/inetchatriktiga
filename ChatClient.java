@@ -11,7 +11,7 @@ public class ChatClient {
 	public ChatClient(String nickname) {
 		try {
 			System.out.println("Connecting to server...");
-			Socket serverSocket = new Socket("localhost", 4444);
+			Socket serverSocket = new Socket("samhamra.com", 4444);
 			System.out.println("Welcome " + nickname);
 			out = new PrintWriter(serverSocket.getOutputStream(), true);
 			out.println(nickname);

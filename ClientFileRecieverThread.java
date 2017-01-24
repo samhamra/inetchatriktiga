@@ -21,13 +21,14 @@ public class ClientFileRecieverThread implements Runnable {
 
 	public void run() {
 		try {
-			System.out.println("trying to connect");
-			Socket fileServerSocket = new Socket("127.0.0.1", port);
-			System.out.println("connected to: "+ ip + "on port " + port);
-			File newFile = new File("myfile2");
+			String realIp = ip.replace("/", "");
+			Socket fileServerSocket = new Socket(realIp, port);
+			System.out.println("connected to: "+ realIp + " on port " + port);
 			InputStream is = fileServerSocket.getInputStream();
+			System.out.println(1);
 			DataInputStream dis = new DataInputStream(is);
 			String fileName = dis.readUTF();
+			File newFile = new File(fileName);
 			FileOutputStream fos = new FileOutputStream(newFile);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);			
 			long fileSize = dis.readLong();			
