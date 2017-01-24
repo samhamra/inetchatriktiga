@@ -1,21 +1,18 @@
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.ServerSocket;
+import java.io.InputStream;
 import java.net.Socket;
 
-import org.omg.CORBA.portable.InputStream;
 
 
 public class ClientFileRecieverThread implements Runnable {
 	String ip;
 	int port;
-	
-	
+
+
 	public ClientFileRecieverThread(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
@@ -24,24 +21,32 @@ public class ClientFileRecieverThread implements Runnable {
 
 	public void run() {
 		try {
-			System.out.println("hejsan filereciever");
-		Socket fileServerSocket = new Socket("localhost", port);
-		System.out.println("connected to fileserver");
-		BufferedReader in =
-				new BufferedReader(
-						new InputStreamReader(fileServerSocket.getInputStream()));
-		byte[] mybytearray = new byte[1024];
-		
-	    InputStream is = (InputStream) fileServerSocket.getInputStream();
-	    FileOutputStream fos = new FileOutputStream("newfile");
-	    BufferedOutputStream bos = new BufferedOutputStream(fos);
-	    int fileSize = is.read_long();
-	    byte[] byteArray = new byte[fileSize];
-	    int bytesRead = is.read(mybytearray, 0, fileSize);
-	    bos.write(mybytearray, 0, bytesRead);
-	    bos.close();
+			Socket fileServerSocket = new Socket("169.254.203.139", port);
+			System.out.println("connected to fileserver");
+			File newFile = new File("myfile2");
+			InputStream is = fileServerSocket.getInputStream();
+			DataInputStream dis = new DataInputStream(is);
+			String fileName = dis.readUTF();
+			FileOutputStream fos = new FileOutputStream(newFile);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);			
+			long fileSize = dis.readLong();			
+			byte[] bytes = new byte[8192];
+			long read = 0;
+
+			while(read < fileSize) {
+				long toRead = fileSize - read;
+				toRead = toRead < bytes.length ? toRead : bytes.length;
+				int numRead = dis.read(bytes, 0, (int) toRead);
+				if(numRead ==-1 ) break;
+				bos.write(bytes,0,numRead);
+				read += numRead;
+			}
+			bos.close();
+			dis.close();
+			is.close();
+			System.out.println("File recieved");
 		} catch (IOException e) {
-			
+
 		}
 	}
 

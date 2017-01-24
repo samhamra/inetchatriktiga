@@ -20,12 +20,20 @@ public class ClientWriterThread implements Runnable {
 					new PrintWriter(serverSocket.getOutputStream(), true);
 			String target;
 			String message;
-
+			String fileName;
 			while (true) {
 				target = stdIn.readLine();
 				message = stdIn.readLine();
 				out.println(target);
 				out.println(message);
+				if(message.equals("SENDFILE")) {
+					fileName = stdIn.readLine();
+					out.println(fileName); //filename
+					
+				} else if(message.equals("ACCEPTFILE")) {
+					fileName = stdIn.readLine();
+					out.println(fileName); //filename
+				}
 			}
 
 		} catch(Exception e) {

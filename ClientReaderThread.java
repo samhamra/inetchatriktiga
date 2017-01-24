@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 
 public class ClientReaderThread implements Runnable{
@@ -26,24 +27,26 @@ public class ClientReaderThread implements Runnable{
 				sender = in.readLine();
 				message = in.readLine();
 				if(message.equals("SENDFILE")) {
-					System.out.println(sender+ " wants to send you a file, respond to sender with \"ACCEPTFILE\" to accept and \"DECLINEFILE\" to decline");
+					String fileName = in.readLine();
+					System.out.println(sender+ " wants to send you a file named " +fileName +  "Respond to sender with \"ACCEPTFILE\"  following the filename to accept and \"DECLINEFILE\" to decline");
 					
 				} else if(message.equals("DECLINEFILE")) {
 					System.out.println(sender+ " declined your file");
 					
 				} else if(message.equals("ACCEPTFILE")) {
-					System.out.println(sender + " accepted your file, setting up communication channel");
+					String fileName = in.readLine();
 					PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
-					ClientFileSenderThread fileServerThread = new ClientFileSenderThread(serverSocket, sender);
+					
+					ClientFileSenderThread fileServerThread = new ClientFileSenderThread(serverSocket, fileName);
 					new Thread(fileServerThread).start();
 					out.println(sender);
 					out.println("SOCKETINFO");
-					out.println("127.0.0.1");
 					out.println(5555);
 				} else if(message.equals("SOCKETINFO")) {
+					System.out.println("socketinfo kom");
 					String ip = in.readLine();
+					System.out.println(ip);
 					int port = Integer.parseInt(in.readLine());
-					new Thread(new ClientFileRecieverThread(ip, port)).run();
 					ClientFileRecieverThread fileClientThread = new ClientFileRecieverThread(ip, port);
 					new Thread(fileClientThread).start();
 					

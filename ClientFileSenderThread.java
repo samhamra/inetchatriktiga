@@ -1,4 +1,3 @@
-import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,37 +12,50 @@ import java.net.Socket;
 public class ClientFileSenderThread implements Runnable {
 	private Socket serverSocket;
 	final int PORT = 5555;
-	private String target;
-	public ClientFileSenderThread(Socket serverSocket, String target) {
+	String fileName;
+	
+	public ClientFileSenderThread(Socket serverSocket, String fileName) {
 		this.serverSocket = serverSocket;
-		this.target = target;
+		this.fileName = fileName;
 	}
 
 
 	public void run() {
-		try {
-			System.out.println("hejsanfilesender");
-			String filePath = new File("").getAbsolutePath();
-			filePath.concat("/hejsan.txt");
+		try {		
 			ServerSocket fileSocket = new ServerSocket(PORT);
-			PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
 			Socket clientSocket = fileSocket.accept();
 			System.out.println("fileclient connected");
-		
-			File myFile = new File(filePath);
-			byte[] byteArray = new byte[(int) myFile.length()];
-			FileInputStream fis = new FileInputStream(myFile);
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			bis.read(byteArray, 0, byteArray.length);
-			OutputStream os = clientSocket.getOutputStream();
+			System.out.println(fileName);
+			File myFile = new File(fileName);
+			FileInputStream in = new FileInputStream(myFile);
+			OutputStream out = clientSocket.getOutputStream();
+			DataOutputStream dout = new DataOutputStream(out);
+	
+			dout.writeUTF(fileName);
+			
+			long fileSize = myFile.length();
+			System.out.println(fileSize);
+			dout.writeLong(fileSize);
+			
+			byte[] bytes = new byte[8192];
+			long sent = 0;
+			while(sent < fileSize) {
+				long numThisTime = fileSize - sent;
 
-			DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
-			System.out.println(myFile.length());
-			dos.writeLong(myFile.length());
+				numThisTime = numThisTime < bytes.length ? numThisTime : bytes.length;
 
+				int numRead = in.read(bytes, 0, (int) numThisTime);
 
-			os.write(byteArray, 0, byteArray.length);
-			os.flush();
+				if(numRead ==-1 ) break;
+
+				dout.write(bytes,0,numRead);
+
+				sent += numRead;
+			}
+			dout.flush();
+			in.close();
+			dout.close();
+			System.out.println("File transferred");
 
 		} catch (IOException e) {
 

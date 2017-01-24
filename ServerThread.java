@@ -49,12 +49,24 @@ public class ServerThread implements Runnable {
 
 					targetSocket = socketList.get(target);
 					out = new PrintWriter(targetSocket.getOutputStream(), true);
-
-					if(message.equals("SOCKETINFO")) {
-						String targetIp = socketList.get(target).getInetAddress().getHostAddress();
+					
+					if(message.equals("SENDFILE")) {
 						out.println(nickname);
-						out.println(targetIp);
-						out.println(message); //port
+						out.println(message);
+						String fileName = in.readLine();
+						out.println(fileName); //filnamnet
+					} else	if(message.equals("ACCEPTFILE")) {
+						out.println(nickname);
+						out.println(message);
+						String fileName = in.readLine();
+						out.println(fileName); //filnamnet
+					} else	if(message.equals("SOCKETINFO")) {
+						out.println(nickname);
+						System.out.println(nickname);
+						out.println(message);
+						System.out.println(socketList.get(nickname).getLocalAddress());
+						out.println(socketList.get(nickname).getLocalAddress());
+						out.println(in.readLine()); //port
 
 					} else {
 						out.println(nickname);
