@@ -13,7 +13,7 @@ public class ChatServer {
 		try {
 			
 			ServerSocket serverSocket =  new ServerSocket(4444);
-			System.out.println(serverSocket.getLocalSocketAddress());
+			System.out.println("www.samhamra.com");
 			System.out.println("Listening on port 4444");
 			while(true) {
 				Socket clientSocket = serverSocket.accept();	
