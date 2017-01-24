@@ -20,7 +20,8 @@ public class ChatServer {
 				ServerThread serverThread = new ServerThread(clientSocket, socketList);
 				new Thread(serverThread).start();
 			}
-		} catch(Exception e) { 
+		} catch(Exception e) {
+			System.out.println(e);
 		}
 
 	}
