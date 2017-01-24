@@ -21,7 +21,7 @@ public class ServerThread implements Runnable {
 		try {
 			in = new BufferedReader(
 					new InputStreamReader(clientSocket.getInputStream()));
-			System.out.println("New connection:" + clientSocket.getLocalAddress());
+			System.out.println("New connection:" + clientSocket.getRemoteSocketAddress());
 			nickname = in.readLine();
 
 			socketList.put(nickname, clientSocket);

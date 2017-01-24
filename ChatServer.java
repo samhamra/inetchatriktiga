@@ -11,8 +11,9 @@ public class ChatServer {
 	public ChatServer() {
 		
 		try {
-			System.out.println(InetAddress.getLocalHost());
+			
 			ServerSocket serverSocket =  new ServerSocket(4444);
+			System.out.println(serverSocket.getInetAddress());
 			System.out.println("Listening on port 4444");
 			while(true) {
 				Socket clientSocket = serverSocket.accept();	
