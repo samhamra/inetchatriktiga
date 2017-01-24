@@ -21,8 +21,10 @@ public class ClientFileRecieverThread implements Runnable {
 
 	public void run() {
 		try {
+			System.out.println(ip);
 			String realIp = ip.replace("/", "");
 			String[] array = realIp.split(":");
+			System.out.println(array[0]);
 		
 			Socket fileServerSocket = new Socket(array[0], port);
 			System.out.println("connected to: "+ array[0] + " on port " + port);
