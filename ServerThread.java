@@ -59,7 +59,7 @@ public class ServerThread implements Runnable {
 					} else	if(message.equals("SOCKETINFO")) {
 						out.println(nickname);
 						out.println(message);
-						out.println(socketList.get(nickname).getLocalAddress());
+						out.println(socketList.get(nickname).getRemoteSocketAddress());
 						String port = in.readLine();
 						out.println(port); //port
 
