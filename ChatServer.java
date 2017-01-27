@@ -38,7 +38,7 @@ public class ChatServer {
 
 					}	
 	} else {
-	out = socketList.get(target).getOutputStream();
+	out = new PrintWriter(socketList.get(target).getOutputStream());
 	out.println(nickname);
 	out.println(message);
 }	

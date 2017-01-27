@@ -50,7 +50,7 @@ public class ServerThread implements Runnable {
 					if(message.equals("SENDFILE")) {
 						chatServer.broadcast(message, nickname, target, false)
 					} else	if(message.equals("ACCEPTFILE")) {
-						chatServer.broadcast(message, nickname, target, false);;
+						chatServer.broadcast(message, nickname, target, false);
 					} else	if(message.equals("SOCKETINFO")) {
 						out.println(nickname);
 						out.println(message);
