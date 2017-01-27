@@ -31,7 +31,7 @@ public class ChatServer {
 
 	for (Map.Entry<String, Socket> entry : socketList.entrySet()) {
 						out = new PrintWriter(entry.getValue().getOutputStream(), true);
-						out.println(nickname);
+					out.println(nickname);
 						out.println(message);
 						//out.println("From: " + nickname + "\tMessage: " + message);
 

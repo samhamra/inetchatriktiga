@@ -40,7 +40,7 @@ public class ServerThread implements Runnable {
 				target = in.readLine();
 				message = in.readLine();
 				if(target.equals("")) {
-					chatServer.broadcast(message, nickname, t, true);
+					chatServer.broadcast(message, nickname);
 					System.out.println("Message delivered to everyone");
 				} else if(socketList.containsKey(target)) {	
 
