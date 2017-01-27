@@ -18,7 +18,7 @@ public class ServerThread implements Runnable {
 		this.socketList = socketList;
 	}
 
-	private static synchronized broadcast(String message) {
+	private static synchronized broadcast(String message, String nickname, PrintWriter out) {
 	
 		for (Map.Entry<String, Socket> entry : socketList.entrySet()) {
 			out = new PrintWriter(entry.getValue().getOutputStream(), true);
@@ -47,7 +47,9 @@ public class ServerThread implements Runnable {
 				target = in.readLine();
 				message = in.readLine();
 				if(target.equals("")) {
-					broadcast(message);
+					PrintWriter mop = new PrintWriter(socketList.get(nickname).getOutputStream(), true);
+					broadcast(message, nickname, mop);
+
 					System.out.println("Message delivered to everyone");
 				} else if(socketList.containsKey(target)) {	
 
