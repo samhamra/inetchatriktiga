@@ -26,10 +26,10 @@ public class ChatServer {
 
 	}
 
-	public synchronized void broadcast(String message, String nickname, String target, boolean broadcast) Throws Exception {
+	public synchronized void broadcast(String message, String nickname, String target, boolean broadcasts) throws Exception {
 	PrintWriter out;
 
-	if(broadcast) {
+	if(broadcasts) {
 	for (Map.Entry<String, Socket> entry : socketList.entrySet()) {
 						out = new PrintWriter(entry.getValue().getOutputStream(), true);
 						out.println(nickname);
