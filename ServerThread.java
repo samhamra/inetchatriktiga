@@ -13,9 +13,11 @@ public class ServerThread implements Runnable {
 	BufferedReader in;
 	Map<String, Socket> socketList;
 	String nickname;
-	public ServerThread(Socket client, Map<String, Socket> socketList) {
+	ChatServer chatServer
+	public ServerThread(Socket client, Map<String, Socket> socketList, ChatServer chatServer) {
 		this.clientSocket = client;
 		this.socketList = socketList;
+		this.chatServer = chatServer;
 	}
 
 	public void run() {
@@ -38,13 +40,7 @@ public class ServerThread implements Runnable {
 				target = in.readLine();
 				message = in.readLine();
 				if(target.equals("")) {
-					for (Map.Entry<String, Socket> entry : socketList.entrySet()) {
-						out = new PrintWriter(entry.getValue().getOutputStream(), true);
-						out.println(nickname);
-						out.println(message);
-						//out.println("From: " + nickname + "\tMessage: " + message);
-
-					}
+					chatServer.broadcast(message, nickname);
 					System.out.println("Message delivered to everyone");
 				} else if(socketList.containsKey(target)) {	
 
