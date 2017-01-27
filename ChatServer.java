@@ -26,8 +26,10 @@ public class ChatServer {
 
 	}
 
-	public synchronized void broadcast(String message, String nickname) {
+	public synchronized void broadcast(String message, String nickname, String target, boolean broadcast) Throws Exception {
 	PrintWriter out;
+
+	if(broadcast) {
 	for (Map.Entry<String, Socket> entry : socketList.entrySet()) {
 						out = new PrintWriter(entry.getValue().getOutputStream(), true);
 						out.println(nickname);
@@ -35,7 +37,13 @@ public class ChatServer {
 						//out.println("From: " + nickname + "\tMessage: " + message);
 
 					}	
-	}
+	} else {
+	out = socketList.get(target).getOutputStream();
+	out.println(nickname);
+	out.println(message);
+}	
+	
+}
 	
 	public static void main(String[] args) {
 		new ChatServer();

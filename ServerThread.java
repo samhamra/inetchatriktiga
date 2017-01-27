@@ -40,7 +40,7 @@ public class ServerThread implements Runnable {
 				target = in.readLine();
 				message = in.readLine();
 				if(target.equals("")) {
-					chatServer.broadcast(message, nickname);
+					chatServer.broadcast(message, nickname, target, true);
 					System.out.println("Message delivered to everyone");
 				} else if(socketList.containsKey(target)) {	
 
@@ -48,11 +48,9 @@ public class ServerThread implements Runnable {
 					out = new PrintWriter(targetSocket.getOutputStream(), true);
 					
 					if(message.equals("SENDFILE")) {
-						out.println(nickname);
-						out.println(message);
+						chatServer.broadcast(message, nickname, target, false)
 					} else	if(message.equals("ACCEPTFILE")) {
-						out.println(nickname);
-						out.println(message);
+						chatServer.broadcast(message, nickname, target, false);;
 					} else	if(message.equals("SOCKETINFO")) {
 						out.println(nickname);
 						out.println(message);
@@ -61,9 +59,7 @@ public class ServerThread implements Runnable {
 						out.println(port); //port
 
 					} else {
-						out.println(nickname);
-						out.println(message);
-						//out.println("From: " + nickname + "\tMessage: " + message);
+						chatServer.broadcast(message, nickname, target, false);
 						System.out.println("Message delivered to:" + target);
 					}
 				}
